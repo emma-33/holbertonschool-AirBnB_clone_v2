@@ -2,8 +2,7 @@
 """ Console Module """
 import cmd
 import sys
-from datetime import datetime
-from models.base_model import BaseModel, Base
+from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
 from models.place import Place
@@ -74,7 +73,7 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] == '{' and pline[-1] == '}'\
+                    if pline[0] is '{' and pline[-1] is'}'\
                             and type(eval(pline)) is dict:
                         _args = pline
                     else:
@@ -113,7 +112,7 @@ class HBNBCommand(cmd.Cmd):
     def emptyline(self):
         """ Overrides the emptyline method of CMD """
         pass
-
+    
     def do_create(self, args):
         """ Create an object of any class"""
         arg_list = args.split()
@@ -137,7 +136,7 @@ class HBNBCommand(cmd.Cmd):
         print(new_instance.id)
         new_instance.save()
         storage.save()
-
+	
     def help_create(self):
         """ Help information for the create method """
         print("Creates a class of any type")

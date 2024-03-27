@@ -8,6 +8,7 @@ class FileStorage:
     __file_path = 'file.json'
     __objects = {}
 
+    
     def all(self, cls=None):
         """Returns a list of objects of one type of class."""
         if cls is None:
@@ -39,6 +40,8 @@ class FileStorage:
         from models.city import City
         from models.amenity import Amenity
         from models.review import Review
+        
+
 
         classes = {
                     'BaseModel': BaseModel, 'User': User, 'Place': Place,
