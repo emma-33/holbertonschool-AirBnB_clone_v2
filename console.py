@@ -74,7 +74,7 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] == '{' and pline[-1] =='}'\
+                    if pline[0] == '{' and pline[-1] == '}'\
                             and type(eval(pline)) is dict:
                         _args = pline
                     else:
@@ -113,7 +113,7 @@ class HBNBCommand(cmd.Cmd):
     def emptyline(self):
         """ Overrides the emptyline method of CMD """
         pass
-    
+
     def do_create(self, args):
         """ Create an object of any class"""
         arg_list = args.split()
@@ -137,7 +137,7 @@ class HBNBCommand(cmd.Cmd):
         print(new_instance.id)
         new_instance.save()
         storage.save()
-	
+
     def help_create(self):
         """ Help information for the create method """
         print("Creates a class of any type")
@@ -200,7 +200,7 @@ class HBNBCommand(cmd.Cmd):
         key = c_name + "." + c_id
 
         try:
-            del(storage.all()[key])
+            del (storage.all()[key])
             storage.save()
         except KeyError:
             print("** no instance found **")
@@ -221,7 +221,8 @@ class HBNBCommand(cmd.Cmd):
                 return
             class_instance = self.classes[args[0]]
             objs = storage.all(class_instance)
-            formatted_objs = ["[{}] ({}) {}".format(args[0], obj.id, obj) for obj in objs.values()]
+            formatted_objs = ["[{}] ({}) {}".format(args[0], obj.id, obj)
+                              for obj in objs.values()]
             print(formatted_objs)
 
     def help_all(self):
