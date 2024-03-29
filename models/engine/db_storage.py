@@ -70,6 +70,8 @@ class DBStorage:
         """Method that delete obj from the current database session"""
         if obj is not None:
             self.__session.delete(obj)
+        else:
+            pass
 
     def reload(self):
         """Method that create the database session and the
