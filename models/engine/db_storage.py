@@ -66,12 +66,10 @@ class DBStorage:
         """Method that save all changes in the current database session"""
         self.__session.commit()
 
-    def delete(self, obj):
+    def delete(self, obj=None):
         """Method that delete obj from the current database session"""
-        if obj is not None:
+        if obj:
             self.__session.delete(obj)
-        else:
-            pass
 
     def reload(self):
         """Method that create the database session and the
