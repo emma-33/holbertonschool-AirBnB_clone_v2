@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """ Place Module for HBNB project """
+from curses import meta
 from models.amenity import Amenity
 import models
 from models.review import Review
@@ -7,6 +8,7 @@ from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, ForeignKey, Integer, Float, Table
 from sqlalchemy.orm import relationship
 from os import getenv
+
 
 
 class Place(BaseModel, Base):
@@ -22,10 +24,15 @@ class Place(BaseModel, Base):
     price_by_night = Column(Integer, nullable=False, default=0)
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
+
     amenity_ids = []
+    
+    reviews = relationship('Review', backref='place', cascade='delete')
+    amenities = relationship('Amenity', secondary='place_amenity',
+                                 viewonly=False,
+                                 back_populates="place_amenities")
 
     metadata = Base.metadata
-
     place_amenity = Table('place_amenity', metadata,
                           Column('place_id', String(60),
                                  ForeignKey('places.id'), primary_key=True,
@@ -34,15 +41,10 @@ class Place(BaseModel, Base):
                                  ForeignKey('amenities.id'), primary_key=True,
                                  nullable=False)
                           )
-
-    if getenv("HBNB_TYPE_STORAGE") == "db":
-        reviews = relationship('Review', backref='place', cascade='delete')
-        amenities = relationship('Amenity', secondary='place_amenity',
-                                 viewonly=False, overlaps="place_amenities")
-
-    else:
+    
+    if getenv("HBNB_TYPE_STORAGE") != "db":
         @property
-        def reviews(self):
+        def reviews_getter(self):
             """Returns the list of Review instances"""
             reviews_instances = []
 
@@ -52,7 +54,7 @@ class Place(BaseModel, Base):
             return reviews_instances
 
         @property
-        def amenities(self):
+        def amenities_getter(self):
             """Returns the list of Amenities instances"""
             amenities_instances = []
 
@@ -62,7 +64,7 @@ class Place(BaseModel, Base):
             return amenities_instances
 
         @amenities.setter
-        def amenities(self, obj):
+        def amenities_setter(self, obj):
             """Amenities setter method"""
             if type(obj) is Amenity():
                 self.amenity_ids.append(obj)

@@ -66,3 +66,7 @@ class FileStorage:
         if obj is not None:
             key = str(obj.__class__.__name__) + '.' + (obj.id)
             FileStorage.__objects.pop(key)
+
+    def close(self):
+        """Method for deserializing the JSON file to objects"""
+        self.reload()
