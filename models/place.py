@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 """ Place Module for HBNB project """
-from curses import meta
 from models.amenity import Amenity
 import models
 from models.review import Review
@@ -28,9 +27,7 @@ class Place(BaseModel, Base):
     amenity_ids = []
     
     reviews = relationship('Review', backref='place', cascade='delete')
-    amenities = relationship('Amenity', secondary='place_amenity',
-                                 viewonly=False,
-                                 back_populates="place_amenities")
+    amenities = relationship('Amenity', secondary='place_amenity', viewonly=False)
 
     metadata = Base.metadata
     place_amenity = Table('place_amenity', metadata,
@@ -54,7 +51,7 @@ class Place(BaseModel, Base):
             return reviews_instances
 
         @property
-        def amenities_getter(self):
+        def amenities(self):
             """Returns the list of Amenities instances"""
             amenities_instances = []
 

@@ -1,11 +1,18 @@
 #!/usr/bin/python3
 """This module defines a class to manage file storage for hbnb clone"""
 
-from sqlalchemy import (create_engine)
+from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.scoping import scoped_session
 from sqlalchemy.schema import MetaData
 from os import getenv
+from models.base_model import BaseModel, Base
+from models.amenity import Amenity
+from models.city import City
+from models.place import Place
+from models.review import Review
+from models.state import State
+from models.user import User
 
 
 class DBStorage:
@@ -30,13 +37,6 @@ class DBStorage:
 
     def all(self, cls=None):
         """Method that returns a dictionnary of objects"""
-        from models.base_model import BaseModel, Base
-        from models.user import User
-        from models.state import State
-        from models.city import City
-        from models.amenity import Amenity
-        from models.place import Place
-        from models.review import Review
 
         classes = {"BaseModel": BaseModel, "User": User, "State": State,
                    "City": City, "Amenity": Amenity, "Place": Place,
@@ -74,20 +74,13 @@ class DBStorage:
     def reload(self):
         """Method that create the database session and the
         tables in the database"""
-        from models.base_model import BaseModel, Base
-        from models.amenity import Amenity
-        from models.city import City
-        from models.place import Place
-        from models.review import Review
-        from models.state import State
-        from models.user import User
 
         Base.metadata.create_all(self.__engine)
 
         session = sessionmaker(bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(session)
-        self.__session = Session()
+        self.__session = Session
 
     def close(self):
         """Method that closes the current session"""
-        self.__session.close()
+        self.__session.remove()
